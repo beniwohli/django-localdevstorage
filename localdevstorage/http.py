@@ -15,9 +15,11 @@ class HttpStorage(BaseStorage):
 
     def _exists(self, name):
         request = urllib2.Request(self._path(name))
-        request.get_method = lambda : 'HEAD'
-        response = urllib2.urlopen(request)
-        return response.code == 200
+        try:
+            response = urllib2.urlopen(request)
+            return response.code == 200
+        except Exception:
+            return False
 
     def _path(self, name):
         return self.fallback_url + name
