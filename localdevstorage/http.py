@@ -29,8 +29,4 @@ class HttpStorage(BaseStorage):
         response = urllib2.urlopen(request)
         if response.code != 200:
             raise IOError()
-        dirname = os.path.dirname(self.path(name))
-        if not os.path.exists(dirname):
-            os.makedirs(dirname)
-        f = open(self.path(name), mode='wb')
-        f.write(response.read())
+        return response
