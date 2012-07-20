@@ -20,14 +20,16 @@ are:
 HTTP
 ----
 
-Set the fallback URL that should be used to fetch missing files. This
-is usually the domain and ``MEDIA_URL`` of your live site::
+Set the fallback domain that should be used to fetch missing files. This
+is usually the protocol (http or https) and the domain your live site::
 
-    LOCALDEVSTORAGE_HTTP_FALLBACK_URL = 'http://www.example.com/media/'
+    LOCALDEVSTORAGE_HTTP_FALLBACK_DOMAIN = 'http://www.example.com/'
 
 .. note::
-    Make sure to include the trailing slash. No errors or warnings will
-    be raised if your media files can't be found.
+    Earlier versions of this library used ``LOCALDEVSTORAGE_HTTP_FALLBACK_URL``.
+    While this still works, it is recommended to update your settings to the
+    new name. ``LOCALDEVSTORAGE_HTTP_FALLBACK_URL`` will be removed in a future
+    version.
 
 SFTP
 ----
