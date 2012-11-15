@@ -22,6 +22,7 @@ except ImportError:
 
 from localdevstorage.base import BaseStorage
 
+
 class SftpStorage(BaseStorage):
     def __init__(self, location=None, base_url=None, user=None, host=None, root_path=None):
         self._host = host or settings.LOCALDEVSTORAGE_SFTP_HOST

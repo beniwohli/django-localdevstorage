@@ -2,6 +2,7 @@ import os
 
 from django.core.files.storage import FileSystemStorage
 
+
 class BaseStorage(FileSystemStorage):
     def _open(self, name, mode='rb'):
         try:

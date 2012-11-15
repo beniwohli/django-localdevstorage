@@ -17,6 +17,24 @@ are:
     * HTTP: ``DEFAULT_FILE_STORAGE = 'localdevstorage.http.HttpStorage'``
     * (more will follow)
 
+.. note::
+    If you use `django-filer`_ 0.9 or higher, you have to make sure that
+    ``localdevstorage`` is *not* used as the thumbnail storage, e.g. by
+    adding this to your settings::
+
+        FILER_STORAGES = {
+            'public': {
+                'thumbnails': {
+                    'ENGINE': 'django.core.files.storage.FileSystemStorage',
+                    'OPTIONS': {},
+                    'THUMBNAIL_OPTIONS': {
+                        'base_dir': 'filer_public_thumbnails',
+                    },
+                },
+            },
+        }
+
+
 HTTP
 ----
 
@@ -62,3 +80,5 @@ Caveats
    file storage abstraction works with django-localdevstorage. Code that
    bypasses Django and accesses files directly will not benefit.
 
+
+.. _django-filer: https://github.com/stefanfoulis/django-filer
