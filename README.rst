@@ -49,6 +49,12 @@ is usually the protocol (http or https) and the domain your live site::
     new name. ``LOCALDEVSTORAGE_HTTP_FALLBACK_URL`` will be removed in a future
     version.
 
+If your server is secured with HTTP basic auth, you can provide a username and
+password::
+
+    LOCALDEVSTORAGE_HTTP_USERNAME = 'foo'
+    LOCALDEVSTORAGE_HTTP_PASSWORD = 'bar'
+
 SFTP
 ----
 

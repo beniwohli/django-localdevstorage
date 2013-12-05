@@ -13,6 +13,7 @@ setup(
     include_package_data = True,
     install_requires=[
         'Django>=1.2',
+        'requests>=1.0',
     ],
     classifiers = [
         "Development Status :: 3 - Alpha",

@@ -1,6 +1,7 @@
-import urllib2
+from cStringIO import StringIO
 import urlparse
 import warnings
+import requests
 
 from django.core.exceptions import ImproperlyConfigured
 from django.conf import settings
@@ -16,13 +17,17 @@ class HttpStorage(BaseStorage):
         self.fallback_domain = fallback_domain or getattr(settings, 'LOCALDEVSTORAGE_HTTP_FALLBACK_DOMAIN', None)
         if not (self.fallback_url or self.fallback_domain):
             raise ImproperlyConfigured('please define LOCALDEVSTORAGE_HTTP_FALLBACK_DOMAIN in your settings')
+        self.session = requests.Session()
+        username = getattr(settings, 'LOCALDEVSTORAGE_HTTP_PASSWORD', None)
+        password = getattr(settings, 'LOCALDEVSTORAGE_HTTP_USERNAME', None)
+        if username and password:
+            self.session.auth = (username, password)
         super(BaseStorage, self).__init__(location, base_url)
 
     def _exists(self, name):
-        request = HeadRequest(self._path(name))
         try:
-            response = urllib2.urlopen(request)
-            return response.code == 200
+            response = self.session.head(self._path(name))
+            return response.status_code == 200
         except Exception:
             return False
 
@@ -32,13 +37,7 @@ class HttpStorage(BaseStorage):
         return self.fallback_url + name
 
     def _get(self, name):
-        request = urllib2.Request(self._path(name))
-        response = urllib2.urlopen(request)
-        if response.code != 200:
+        response = self.session.get(self._path(name))
+        if response.status_code != 200:
             raise IOError()
-        return response
-
-
-class HeadRequest(urllib2.Request):
-    def get_method(self):
-        return "HEAD"
+        return StringIO(response.content)
