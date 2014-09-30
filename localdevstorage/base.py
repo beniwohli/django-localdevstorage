@@ -16,10 +16,13 @@ class BaseStorage(FileSystemStorage):
                 pass
             raise
 
+    def _exists_locally(self, name):
+        return super(BaseStorage, self).exists(name)
+
     def exists(self, name):
-        if super(BaseStorage, self).exists(name):
+        if self._exists_locally(self):
             return True
-        return self._exists(name)
+        return self._exists_upstream(name)
 
     def _write(self, filelike, name):
         dirname = os.path.dirname(self.path(name))
@@ -27,3 +30,9 @@ class BaseStorage(FileSystemStorage):
             os.makedirs(dirname)
         f = open(self.path(name), mode='wb')
         f.write(filelike.read())
+
+    def _fetch_local(self, name, force=False):
+        if self._exists_locally(name) and not force:
+            return
+
+        return self._write(self._get(name), name)

@@ -1,11 +1,15 @@
-from django.test import TestCase
+from django.conf import settings
+from unittest import TestCase
 
 from localdevstorage.http import HttpStorage
 
+settings.configure(
+    LOCALDEVSTORAGE_HTTP_FALLBACK_DOMAIN='https://github.com/piquadrat/django-localdevstorage/blob/master/localdevstorage/'
+)
 
 class HttpStorageTest(TestCase):
         def setUp(self):
-            self.storage = HttpStorage(fallback_url='https://github.com/piquadrat/django-localdevstorage/blob/master/localdevstorage/')
+            self.storage = HttpStorage(base_url=settings.LOCALDEVSTORAGE_HTTP_FALLBACK_DOMAIN, location='./localdevstorage/')
 
         def test_http_fallback(self):
             self.f = self.storage.open('base.py')
