@@ -1,18 +1,22 @@
 import os
-
 from django.core.files.storage import FileSystemStorage
+
+try:
+    FileNotFoundError
+except:
+    FileNotFoundError = IOError
 
 
 class BaseStorage(FileSystemStorage):
     def _open(self, name, mode='rb'):
         try:
             return super(BaseStorage, self)._open(name, mode)
-        except IOError:
+        except FileNotFoundError:
             try:
                 f = self._get(name)
                 self._write(f, name)
                 return super(BaseStorage, self)._open(name, mode)
-            except Exception:
+            except FileNotFoundError:
                 pass
             raise
 

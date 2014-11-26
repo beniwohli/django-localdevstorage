@@ -5,7 +5,7 @@
 # License: MIT
 #
 # Modeled on the FTP storage by Rafal Jonca <jonca.rafal@gmail.com>
-
+from __future__ import print_function
 try:
     import ssh
 except ImportError:
@@ -16,9 +16,10 @@ import posixpath
 from django.conf import settings
 from django.core.files.base import File
 try:
-    from cStringIO import StringIO
+    from io import StringIO
 except ImportError:
-    from StringIO import StringIO
+    # Python 2 fallbacks
+    from cStringIO import StringIO
 
 from localdevstorage.base import BaseStorage
 
@@ -51,10 +52,10 @@ class SftpStorage(BaseStorage):
 
         try:
             self._ssh.connect(self._host, **self._params)
-        except ssh.AuthenticationException, e:
+        except ssh.AuthenticationException as e:
             raise
-        except Exception, e:
-            print e
+        except Exception as e:
+            print(e)
 
         if not hasattr(self, '_sftp'):
             self._sftp = self._ssh.open_sftp()
