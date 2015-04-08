@@ -29,7 +29,7 @@ class BaseStorage(FileSystemStorage):
         return super(BaseStorage, self).exists(name)
 
     def exists(self, name):
-        if self._exists_locally(self):
+        if self._exists_locally(name):
             return True
         return self._exists_upstream(name)
 
