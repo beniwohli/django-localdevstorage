@@ -73,7 +73,7 @@ class SftpStorage(BaseStorage):
         except IOError:
             pass
 
-    def _exists(self, name):
+    def _exists_upstream(self, name):
         try:
             f = SFTPStorageFile(name, self, 'rb')
             f.close()

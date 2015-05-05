@@ -13,6 +13,8 @@ import warnings
 
 from django.core.exceptions import ImproperlyConfigured
 from django.conf import settings
+from django.utils.encoding import filepath_to_uri
+from django.utils.six.moves.urllib.parse import urljoin
 
 from localdevstorage.base import BaseStorage
 
@@ -32,16 +34,19 @@ class HttpStorage(BaseStorage):
             self.session.auth = (username, password)
         super(BaseStorage, self).__init__(location, base_url)
 
-    def _exists(self, name):
+    def _exists_upstream(self, name):
         try:
             response = self.session.head(self._path(name))
             return response.status_code == 200
         except FileNotFoundError:
             return False
 
+    def _url(self, name):
+        return urljoin('/', filepath_to_uri(name))
+
     def _path(self, name):
         if self.fallback_domain:
-            return urljoin(self.fallback_domain, self.url(name))
+            return urlparse.urljoin(self.fallback_domain, self._url(name))
         return self.fallback_url + name
 
     def _get(self, name):
