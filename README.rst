@@ -2,6 +2,15 @@
 django-localdevstorage
 ======================
 
+.. image:: https://travis-ci.org/piquadrat/django-localdevstorage.svg?branch=master
+    :target: http://travis-ci.org/piquadrat/django-localdevstorage
+
+.. image:: https://coveralls.io/repos/piquadrat/django-localdevstorage/badge.svg?branch=master
+    :target: https://coveralls.io/r/piquadrat/django-localdevstorage?branch=master
+
+.. image:: https://img.shields.io/pypi/v/django-localdevstorage.svg
+    :target: https://pypi.python.org/pypi/django-localdevstorage/
+
 django-localdevstorage is a set of storage backends that helps during
 development. Instead of having to copy all user generated media from
 the live site for local development, the storage backends provided by
