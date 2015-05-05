@@ -13,6 +13,8 @@ except ImportError:
 
 import os
 import posixpath
+import warnings
+
 from django.conf import settings
 from django.core.files.base import File
 try:
@@ -26,6 +28,10 @@ from localdevstorage.base import BaseStorage
 
 class SftpStorage(BaseStorage):
     def __init__(self, location=None, base_url=None, user=None, host=None, root_path=None):
+        warnings.warn(
+            'The SFTP backend is unsupported and untested. '
+            'Usage is not recommended!'
+        )
         self._host = host or settings.LOCALDEVSTORAGE_SFTP_HOST
         self._root_path = root_path or settings.LOCALDEVSTORAGE_SFTP_ROOT_PATH
 
