@@ -1,7 +1,15 @@
-from cStringIO import StringIO
-import urlparse
-import warnings
+try:
+    from urllib.parse import urljoin
+except ImportError:
+    # Python 2 fallbacks
+    from urlparse import urljoin
+try:
+    FileNotFoundError
+except:
+    FileNotFoundError = IOError
+from io import BytesIO
 import requests
+import warnings
 
 from django.core.exceptions import ImproperlyConfigured
 from django.conf import settings
@@ -28,16 +36,16 @@ class HttpStorage(BaseStorage):
         try:
             response = self.session.head(self._path(name))
             return response.status_code == 200
-        except Exception:
+        except FileNotFoundError:
             return False
 
     def _path(self, name):
         if self.fallback_domain:
-            return urlparse.urljoin(self.fallback_domain, self.url(name))
+            return urljoin(self.fallback_domain, self.url(name))
         return self.fallback_url + name
 
     def _get(self, name):
         response = self.session.get(self._path(name))
         if response.status_code != 200:
-            raise IOError()
-        return StringIO(response.content)
+            raise FileNotFoundError()
+        return BytesIO(response.content)
