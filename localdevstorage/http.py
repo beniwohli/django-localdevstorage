@@ -5,7 +5,7 @@ except ImportError:
     from urlparse import urljoin
 try:
     FileNotFoundError
-except:
+except NameError:
     FileNotFoundError = IOError
 from io import BytesIO
 import requests
@@ -14,7 +14,6 @@ import warnings
 from django.core.exceptions import ImproperlyConfigured
 from django.conf import settings
 from django.utils.encoding import filepath_to_uri
-from django.utils.six.moves.urllib.parse import urljoin
 
 from localdevstorage.base import BaseStorage
 
@@ -46,7 +45,7 @@ class HttpStorage(BaseStorage):
 
     def _path(self, name):
         if self.fallback_domain:
-            return urlparse.urljoin(self.fallback_domain, self._url(name))
+            return urljoin(self.fallback_domain, self._url(name))
         return self.fallback_url + name
 
     def _get(self, name):
