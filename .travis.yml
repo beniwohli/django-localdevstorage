@@ -15,10 +15,12 @@ env:
     - DJANGO=1.8.1
 
 install:
-  - pip install Django==$DJANGO pytest pytest-django requests responses
+  - pip install Django==$DJANGO pytest pytest-django requests responses pytest-cov cov-core coverage python-coveralls
 
 script:
-  python setup.py test
+  python setup.py test -a "--cov-config .coveragerc --cov localdevstorage"
+
+after_success: coveralls --config_file=.coveragerc
 
 matrix:
   exclude:

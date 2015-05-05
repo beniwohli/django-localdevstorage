@@ -1,0 +1,17 @@
+[run]
+source =
+    localdevstorage
+branch = False
+# sftp backend is unsupported / untested
+omit =
+    localdevstorage/tests/*
+    localdevstorage/sftp.py
+
+[report]
+exclude_lines =
+    __version__ =
+    pragma: no cover
+    def __repr__
+    raise AssertionError
+    raise NotImplementedError
+    if __name__ == .__main__.:
